@@ -27,12 +27,25 @@ export class ColumnView extends Component<IProps, IState> {
   }
 
   render() {
+    const {column} = this.props;
     return (
       <div className={styles.column}>
-        <div className={`${styles.title} ${styles[this.props.column.color]}`}>
-          {this.props.column.title}
+        <div className={`${styles.title} ${styles[column.color]}`}>
+          {column.title}
         </div>
         <div className={styles.stories}>
+          {column.stories.length < 1 && (
+            <div className={styles.noStory}>
+              <div className={styles.noStoryTitle}>No Story</div>
+              <div className={styles.instructions}>
+                Drag stories here
+                <br/>
+                or
+                <br/>
+                Click + create new stories
+              </div>
+            </div>
+          )}
           <Container
             groupName={this.props.kanbanId}
             style={{height: '100%'}}
@@ -41,9 +54,7 @@ export class ColumnView extends Component<IProps, IState> {
             onDrop={this.handleOnDrop}
             getChildPayload={this.handleGetChildPayload}>
             {
-              this
-                .props
-                .column
+              column
                 .stories
                 .map((story, index) =>
                   <Draggable key={story.id}>
