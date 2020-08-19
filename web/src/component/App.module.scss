@@ -1,4 +1,21 @@
 .AppUi {
   font-family: "Source Code Pro", sans-serif;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.bottomSection {
+  display: flex;
+  flex: 1;
+}
+
+.kanban {
+  flex: 1;
+}
+
+.memberStories {
+  z-index: 10;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  padding: 20px 0;
 }

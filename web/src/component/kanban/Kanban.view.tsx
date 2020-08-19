@@ -6,9 +6,11 @@ import {ColumnView} from './Column.view';
 import {Story} from '../../entity/story';
 import {Column} from '../../entity/column';
 import {Container, Draggable, DropResult} from 'react-smooth-dnd';
+import {ColumnsFilter} from '../../filter/column.filter';
 
 interface IProps {
   kanban: Kanban;
+  columnsFilter: ColumnsFilter;
 }
 
 interface IState {
@@ -19,12 +21,13 @@ export class KanbanView extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      columns: this.props.kanban.columns
+      columns: this.props.kanban.columns,
     };
   }
 
   render() {
-    const {columns} = this.state;
+    let {columns} = this.state;
+    columns = this.props.columnsFilter(columns);
     return (
       <div className={styles.kanban}>
         <Container
@@ -33,6 +36,7 @@ export class KanbanView extends Component<IProps, IState> {
             height: '100%',
             display: 'flex'
           }}
+          behaviour={'contain'}
           lockAxis={'x'}
           orientation={'horizontal'}
           getChildPayload={this.handleGetChildPayload}
