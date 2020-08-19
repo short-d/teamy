@@ -1,0 +1,52 @@
+.story {
+  $border-width: 2px;
+
+  border: $border-width solid transparent;
+  box-sizing: border-box;
+  display: flex;
+  min-height: 30px;
+  padding: 8px 10px;
+
+  &.active {
+    border: $border-width solid #2196f3;
+    border-radius: 4px;
+    cursor: pointer;
+
+    .avatar {
+      opacity: 1;
+    }
+  }
+}
+
+.leftPane {
+  flex: 1;
+}
+
+.title {
+  color: #424242;
+  font-weight: 600;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+}
+
+.tags {
+  list-style: none;
+  margin-top: 0;
+  padding: 0;
+}
+
+.actions {
+  height: 100%;
+  padding-left: 6px;
+  width: 24px;
+}
+
+.avatar {
+  opacity: 0;
+
+  img {
+    display: block;
+  }
+}

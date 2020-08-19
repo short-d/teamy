@@ -1,0 +1,49 @@
+.column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.title {
+  border-radius: 4px;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 8px 20px;
+
+  &.red {
+    background-color: rgb(217, 54, 81);
+  }
+
+  &.yellow {
+    background-color: rgb(255, 159, 26);
+  }
+
+  &.gray {
+    background-color: rgb(152, 170, 179);
+  }
+
+  &.blue {
+    background-color: rgb(0, 170, 255);
+  }
+
+  &.green {
+    background-color: rgb(71, 204, 138);
+  }
+}
+
+.stories {
+  flex: 1;
+}
+
+.story {
+  margin-top: 2px;
+  padding: 4px;
+}
+
+.placeholder {
+  background-color: #424242;
+  height: 0;
+  transition: height 600ms ease-in-out;
+}
