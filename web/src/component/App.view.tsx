@@ -12,6 +12,12 @@ import {
   storiesAssignTo,
   unassignedStories
 } from '../filter/column.filter';
+import {Story} from '../entity/story';
+
+interface IProp {
+  kanbanService: KanbanService;
+  userService: UserService;
+}
 
 interface IState {
   kanban?: Kanban;
@@ -21,10 +27,7 @@ interface IState {
   columnsFilter: ColumnsFilter;
 }
 
-export class AppView extends Component<any, IState> {
-  private kanbanService: KanbanService = new KanbanService();
-  private userService: UserService = new UserService();
-
+export class AppView extends Component<IProp, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -33,11 +36,11 @@ export class AppView extends Component<any, IState> {
     };
   }
 
-  componentDidMount() {
-    const kanban = this.kanbanService.fetchKanban();
-    const me = this.userService.me();
-    const unassigned = this.userService.unassigned();
-    const members = this.userService.members('short');
+  async componentDidMount() {
+    const kanban = await this.props.kanbanService.fetchActiveKanban();
+    const me = this.props.userService.me();
+    const unassigned = this.props.userService.unassigned();
+    const members = this.props.userService.members('short');
     this.setState({
       kanban,
       me,
@@ -48,7 +51,11 @@ export class AppView extends Component<any, IState> {
 
   render() {
     const {kanban, me, unassigned, members, columnsFilter} = this.state;
-    const stories = kanban?.columns.flatMap(column => column.stories);
+    let stories: Story[] = [];
+    if (kanban) {
+      console.log(kanban)
+      stories = kanban.columns.flatMap(column => column.stories);
+    }
 
     return (
       <div className={styles.AppUi}>

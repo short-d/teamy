@@ -21,8 +21,17 @@ export class KanbanView extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      columns: this.props.kanban.columns,
+      columns: [],
     };
+  }
+
+  componentDidMount() {
+    const {kanban} = this.props;
+    if (kanban) {
+      this.setState({
+        columns: kanban.columns
+      })
+    }
   }
 
   render() {
