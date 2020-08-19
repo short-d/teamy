@@ -1,4 +1,5 @@
 import {Kanban} from '../entity/kanban';
+import harry from './harry.jpeg';
 
 export class KanbanService {
   fetchKanban(): Kanban {
@@ -27,6 +28,7 @@ export class KanbanService {
               title: 'Build API rate limiting library',
               tags: [],
               isCompleted: false,
+              assignedTo: {avatarURL: harry, id: 'harry', name: 'Harry'},
             }
           ]
         },
