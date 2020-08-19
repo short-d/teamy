@@ -2,8 +2,8 @@ import {User} from './user';
 
 export interface Story {
   id: string;
-  title: String;
-  notesMarkdown?: String;
+  title: string;
+  notesMarkdown?: string;
   tags: string[];
   assignedTo?: User;
   isCompleted: boolean;
