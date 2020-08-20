@@ -1,0 +1,26 @@
+.memberStories {
+  display: flex;
+  flex-direction: column;
+  width: 90px;
+}
+
+.others {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  padding-top: 20px;
+}
+
+.memberStory {
+  &:hover {
+    cursor: pointer;
+  }
+  &:not(:first-child) {
+    margin-top: 16px;
+  }
+}
+
+.blurred {
+  opacity: 0.2;
+}

@@ -30,10 +30,13 @@ export class StoryView extends Component<IProps> {
           </div>
           <div className={styles.actions}>
             <div className={styles.avatar}>
-              {story.assignedTo && <img alt={story.assignedTo.name}
-                                        src={story.assignedTo.avatarURL}/>}
+              {story.assignedTo &&
+              <img alt={story.assignedTo.name}
+                   src={story.assignedTo.avatarURL}/>}
               {!story.assignedTo &&
-              <img alt={'Unassigned'} src={questionIcon}/>}
+              <img className={styles.unassigned}
+                   alt={'Unassigned'}
+                   src={questionIcon}/>}
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@
     border-radius: 4px;
     cursor: pointer;
 
-    .avatar {
+    .unassigned {
       opacity: 1;
     }
   }
@@ -39,14 +39,21 @@
 
 .actions {
   height: 100%;
-  padding-left: 6px;
+  padding-left: 10px;
   width: 24px;
 }
 
 .avatar {
-  opacity: 0;
+  opacity: 1;
 
   img {
     display: block;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
   }
+}
+
+.unassigned {
+  opacity: 0;
 }
