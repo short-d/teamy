@@ -37,15 +37,16 @@ export class AppView extends Component<IProp, IState> {
   }
 
   async componentDidMount() {
-    const kanban = await this.props.kanbanService.fetchActiveKanban();
-    const me = this.props.userService.me();
-    const unassigned = this.props.userService.unassigned();
-    const members = this.props.userService.members('short');
-    this.setState({
-      kanban,
-      me,
-      unassigned,
-      members
+    this.props.kanbanService.fetchActiveKanban().then(kanban => {
+      const me = this.props.userService.me();
+      const unassigned = this.props.userService.unassigned();
+      const members = this.props.userService.members('short');
+      this.setState({
+        kanban,
+        me,
+        unassigned,
+        members
+      });
     });
   }
 
@@ -53,13 +54,13 @@ export class AppView extends Component<IProp, IState> {
     const {kanban, me, unassigned, members, columnsFilter} = this.state;
     let stories: Story[] = [];
     if (kanban) {
-      console.log(kanban)
       stories = kanban.columns.flatMap(column => column.stories);
     }
 
     return (
       <div className={styles.AppUi}>
-        {me && kanban && <div className={styles.bottomSection}>
+        {me && kanban &&
+        <div className={styles.bottomSection}>
             <div className={styles.memberStories}>
                 <MemberStoriesView
                     me={me}

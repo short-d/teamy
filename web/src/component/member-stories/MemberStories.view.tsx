@@ -23,6 +23,8 @@ interface IState {
   selectedUser?: User
 }
 
+type StoryCount = { [id: string]: number };
+
 export class MemberStoriesView extends Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -35,17 +37,7 @@ export class MemberStoriesView extends Component<IProps, IState> {
   render() {
     const {stories, me, unassigned, users} = this.props;
     const unassignedStoryCount = stories.filter(story => !story.assignedTo).length;
-    const userStoryCount: { [id: string]: number } = {};
-    stories.forEach(story => {
-      if (!story.assignedTo) {
-        return;
-      }
-      const userId = story.assignedTo.id;
-      if (!userStoryCount[userId]) {
-        userStoryCount[userId] = 0;
-      }
-      userStoryCount[userId]++;
-    });
+    const userStoryCount = this.countStories(stories);
     const others = users.filter(user => user.id !== me.id);
 
     const {isSelected, isUnassignedSelected} = this.state;
@@ -93,6 +85,21 @@ export class MemberStoriesView extends Component<IProps, IState> {
         </div>
       </div>
     );
+  }
+
+  private countStories(stories: Story[]): StoryCount{
+    const userStoryCount: StoryCount = {};
+    stories.forEach(story => {
+      if (!story.assignedTo) {
+        return;
+      }
+      const userId = story.assignedTo.id;
+      if (!userStoryCount[userId]) {
+        userStoryCount[userId] = 0;
+      }
+      userStoryCount[userId]++;
+    });
+    return userStoryCount;
   }
 
   private shouldBlurMember = (member: User) => {
