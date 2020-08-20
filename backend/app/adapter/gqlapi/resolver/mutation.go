@@ -12,7 +12,6 @@ type AuthMutationArgs struct {
 
 // AuthMutation extracts user information from authentication token
 func (m Mutation) AuthMutation(args *AuthMutationArgs) (*AuthMutation, error) {
-
 	authMutation := newAuthMutation(
 		args.AuthToken,
 	)
