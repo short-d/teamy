@@ -68,6 +68,7 @@ export class MemberStoriesView extends Component<IProps, IState> {
             />
           </div>
         </div>
+        <div className={styles.divider}/>
         <div className={styles.others}>
           {others.map(user =>
             <div className={classNames({
