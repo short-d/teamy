@@ -13,6 +13,7 @@ import {
   unassignedStories
 } from '../filter/column.filter';
 import {Story} from '../entity/story';
+import {MenuView} from './Menu.view';
 
 interface IProp {
   kanbanService: KanbanService;
@@ -59,6 +60,7 @@ export class AppView extends Component<IProp, IState> {
 
     return (
       <div className={styles.AppUi}>
+        <MenuView/>
         {me && kanban &&
         <div className={styles.bottomSection}>
             <div className={styles.memberStories}>

@@ -1,7 +1,10 @@
 .AppUi {
+  position: relative;
   font-family: "Source Code Pro", sans-serif;
   height: 100vh;
+  box-sizing: border-box;
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
 }
 
