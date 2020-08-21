@@ -12,10 +12,12 @@
 .bottomSection {
   display: flex;
   flex: 1;
+  overflow-y: hidden;
 }
 
 .kanban {
   flex: 1;
+  overflow-y: hidden;
 }
 
 .memberStories {

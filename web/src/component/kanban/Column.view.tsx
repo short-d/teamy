@@ -63,7 +63,7 @@ export class ColumnView extends Component<IProps, IState> {
           )}
           <Container
             groupName={this.props.kanbanId}
-            style={{height: '100%'}}
+            style={{minHeight: '100%', overflow: 'hidden'}}
             onDragStart={this.handleDragStart}
             onDragEnd={this.handleDragEnd}
             onDrop={this.handleOnStoryDrop}
