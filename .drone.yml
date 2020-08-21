@@ -11,7 +11,7 @@ steps:
       - apk add --no-cache bash git
       - cd web
       - yarn
-      - CI=true yarn build:testing
+      - CI=true yarn build:staging
     when:
       event:
         - push
