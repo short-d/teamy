@@ -9,12 +9,15 @@ import {GraphQLService} from './fw/GraphQL.service';
 import {FetchHTTPService} from './fw/http.service';
 import {UserService} from './service/user.service';
 import {StoryService} from './service/story.service';
+import {EnvService} from './service/env.service';
+
+const envService = new EnvService();
 
 const httpService = new FetchHTTPService();
 const graphQLService = new GraphQLService(httpService);
 const teamyGraphQLService = new TeamyGraphQLService(
   graphQLService,
-  'http://localhost:8000/graphql'
+  envService
 );
 const projectService = new ProjectService(teamyGraphQLService);
 const storyService = new StoryService();
