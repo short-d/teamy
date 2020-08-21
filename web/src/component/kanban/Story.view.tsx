@@ -1,4 +1,4 @@
-import React, {Component, FormEvent} from 'react';
+import React, {Component, createRef, FormEvent, KeyboardEvent} from 'react';
 
 import styles from './Story.module.scss';
 import {Story} from '../../entity/story';
@@ -6,6 +6,7 @@ import {CardView} from '../ui/Card.view';
 
 import questionIcon from './question.svg';
 import classNames from 'classnames';
+import {Key} from '../key/key';
 
 interface IProps {
   isEditing: boolean;
@@ -20,6 +21,8 @@ interface IState {
 }
 
 export class StoryView extends Component<IProps, IState> {
+  private titleInputRef = createRef<HTMLTextAreaElement>();
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -33,6 +36,25 @@ export class StoryView extends Component<IProps, IState> {
     });
   }
 
+  componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
+    if (!this.props.isEditing) {
+      return;
+    }
+
+    const inputEl = this.titleInputRef.current;
+    if (!inputEl) {
+      return;
+    }
+    inputEl.style.height = `${inputEl.scrollHeight}px`;
+
+    if (prevProps.isEditing) {
+      return;
+    }
+
+    inputEl.focus();
+    inputEl.selectionStart = inputEl.selectionEnd = inputEl.value.length;
+  }
+
   render() {
     const {story, isEditing} = this.props;
     const {title} = this.state;
@@ -42,16 +64,18 @@ export class StoryView extends Component<IProps, IState> {
           classNames({
             [styles.story]: true,
             [styles.active]: this.props.active
-          })}
-             onBlur={this.handleOnTitleTextFieldBlur}>
+          })
+        }
+             onKeyDown={this.handleOnKeyDown}>
           <div className={styles.leftPane}>
             <div className={styles.title}>
               {isEditing &&
               <textarea
+                  ref={this.titleInputRef}
                   className={styles.titleTextField}
-                  autoFocus={true}
                   value={title}
                   onChange={this.handleTitleChange}
+                  onBlur={this.handleOnTitleTextFieldBlur}
               />
               }
               {!isEditing &&
@@ -89,12 +113,7 @@ export class StoryView extends Component<IProps, IState> {
   };
 
   handleOnTitleTextFieldBlur = () => {
-    if (this.props.onFinishEditing) {
-      this.props.onFinishEditing(
-        Object.assign({}, this.props.story, {
-          title: this.state.title
-        }));
-    }
+    this.finishEditing();
   };
 
   handleOnTitleDoubleClick = () => {
@@ -102,4 +121,21 @@ export class StoryView extends Component<IProps, IState> {
       this.props.onStartEditing();
     }
   };
+
+  handleOnKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    console.log(event.key);
+    switch (event.key) {
+      case Key.Esc:
+        this.finishEditing();
+    }
+  };
+
+  private finishEditing() {
+    if (this.props.onFinishEditing) {
+      this.props.onFinishEditing(
+        Object.assign({}, this.props.story, {
+          title: this.state.title
+        }));
+    }
+  }
 }
