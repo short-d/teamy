@@ -8,7 +8,7 @@ export class EnvService {
   constructor() {
     this.environment = {
       graphQLBaseURL: this.getVal('GRAPHQL_API_BASE_URL')
-    }
+    };
   }
 
   getEnv(): Environment {
