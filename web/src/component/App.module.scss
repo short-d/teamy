@@ -6,6 +6,7 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
+  background-color: #faf6f1;
 }
 
 .bottomSection {
@@ -21,4 +22,5 @@
   z-index: 10;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   padding: 20px 0;
+  background-color: white;
 }

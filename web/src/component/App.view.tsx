@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styles from './App.module.scss';
 import {KanbanView} from './kanban/Kanban.view';
 import {Kanban} from '../entity/kanban';
-import {KanbanService} from '../service/kanban.service';
+import {ProjectService} from '../service/project.service';
 import {MemberStoriesView} from './member-stories/MemberStories.view';
 import {UserService} from '../service/user.service';
 import {User} from '../entity/user';
@@ -13,10 +13,10 @@ import {
   unassignedStories
 } from '../filter/column.filter';
 import {Story} from '../entity/story';
-import {MenuView} from './Menu.view';
+import {MenuView} from './menu/Menu.view';
 
 interface IProp {
-  kanbanService: KanbanService;
+  projectService: ProjectService;
   userService: UserService;
 }
 
@@ -38,7 +38,7 @@ export class AppView extends Component<IProp, IState> {
   }
 
   async componentDidMount() {
-    this.props.kanbanService.fetchActiveKanban().then(kanban => {
+    this.props.projectService.fetchActiveSprint().then(kanban => {
       const me = this.props.userService.me();
       const unassigned = this.props.userService.unassigned();
       const members = this.props.userService.members('short');
@@ -60,7 +60,7 @@ export class AppView extends Component<IProp, IState> {
 
     return (
       <div className={styles.AppUi}>
-        <MenuView/>
+        <MenuView projectService={this.props.projectService}/>
         {me && kanban &&
         <div className={styles.bottomSection}>
             <div className={styles.memberStories}>
