@@ -36,6 +36,7 @@
 .stories {
   flex: 1;
   margin-top: 4px;
+  overflow-y: auto;
   position: relative;
 }
 
@@ -120,5 +121,5 @@
 }
 
 .lastAddButton {
-  margin: 10px auto 0 auto;
+  margin: 10px auto;
 }

@@ -46,12 +46,12 @@ export class StoryView extends Component<IProps, IState> {
       return;
     }
     inputEl.style.height = `${inputEl.scrollHeight}px`;
+    inputEl.focus();
 
     if (prevProps.isEditing) {
       return;
     }
 
-    inputEl.focus();
     inputEl.selectionStart = inputEl.selectionEnd = inputEl.value.length;
   }
 
