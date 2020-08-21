@@ -68,6 +68,7 @@ export class MemberStoriesView extends Component<IProps, IState> {
             />
           </div>
         </div>
+        <div className={styles.divider}/>
         <div className={styles.others}>
           {others.map(user =>
             <div className={classNames({
@@ -85,37 +86,6 @@ export class MemberStoriesView extends Component<IProps, IState> {
         </div>
       </div>
     );
-  }
-
-  private countStories(stories: Story[]): StoryCount{
-    const userStoryCount: StoryCount = {};
-    stories.forEach(story => {
-      if (!story.assignedTo) {
-        return;
-      }
-      const userId = story.assignedTo.id;
-      if (!userStoryCount[userId]) {
-        userStoryCount[userId] = 0;
-      }
-      userStoryCount[userId]++;
-    });
-    return userStoryCount;
-  }
-
-  private shouldBlurMember = (member: User) => {
-    const {isSelected, isUnassignedSelected, } = this.state;
-    if (!isSelected) {
-      return false;
-    }
-    if (isUnassignedSelected) {
-      return true;
-    }
-    return !this.isMemberSelected(member);
-  };
-
-  private isMemberSelected(member: User) {
-    const {selectedUser} = this.state;
-    return selectedUser && selectedUser.id === member.id
   }
 
   handleOnUnassignedClick = () => {
@@ -158,6 +128,37 @@ export class MemberStoriesView extends Component<IProps, IState> {
       this.props.onMemberSelected(member);
     };
   };
+
+  private countStories(stories: Story[]): StoryCount {
+    const userStoryCount: StoryCount = {};
+    stories.forEach(story => {
+      if (!story.assignedTo) {
+        return;
+      }
+      const userId = story.assignedTo.id;
+      if (!userStoryCount[userId]) {
+        userStoryCount[userId] = 0;
+      }
+      userStoryCount[userId]++;
+    });
+    return userStoryCount;
+  }
+
+  private shouldBlurMember = (member: User) => {
+    const {isSelected, isUnassignedSelected,} = this.state;
+    if (!isSelected) {
+      return false;
+    }
+    if (isUnassignedSelected) {
+      return true;
+    }
+    return !this.isMemberSelected(member);
+  };
+
+  private isMemberSelected(member: User) {
+    const {selectedUser} = this.state;
+    return selectedUser && selectedUser.id === member.id;
+  }
 
   private deSelectAll() {
     this.setState({

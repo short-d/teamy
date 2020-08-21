@@ -4,18 +4,22 @@
   width: 90px;
 }
 
+.divider {
+  border-top: 3px solid rgba(0, 0, 0, 0.05);
+  margin: 30px auto;
+  width: 50px;
+}
+
 .others {
   display: flex;
   flex-direction: column;
-  margin-top: 12px;
-  border-top: 2px solid rgba(0, 0, 0, 0.1);
-  padding-top: 20px;
 }
 
 .memberStory {
   &:hover {
     cursor: pointer;
   }
+
   &:not(:first-child) {
     margin-top: 16px;
   }
