@@ -8,15 +8,17 @@ import {UserService} from '../service/user.service';
 import {User} from '../entity/user';
 import {
   allStories,
-  ColumnsFilter,
   storiesAssignTo,
+  StoryFilter,
   unassignedStories
-} from '../filter/column.filter';
+} from '../filter/story.filter';
 import {Story} from '../entity/story';
 import {MenuView} from './menu/Menu.view';
+import {StoryService} from '../service/story.service';
 
 interface IProp {
   projectService: ProjectService;
+  storyService: StoryService;
   userService: UserService;
 }
 
@@ -25,7 +27,7 @@ interface IState {
   me?: User;
   unassigned?: User;
   members: User[];
-  columnsFilter: ColumnsFilter;
+  storyFilter: StoryFilter;
 }
 
 export class AppView extends Component<IProp, IState> {
@@ -33,7 +35,7 @@ export class AppView extends Component<IProp, IState> {
     super(props);
     this.state = {
       members: [],
-      columnsFilter: allStories
+      storyFilter: allStories
     };
   }
 
@@ -52,7 +54,7 @@ export class AppView extends Component<IProp, IState> {
   }
 
   render() {
-    const {kanban, me, unassigned, members, columnsFilter} = this.state;
+    const {kanban, me, unassigned, members, storyFilter} = this.state;
     let stories: Story[] = [];
     if (kanban) {
       stories = kanban.columns.flatMap(column => column.stories);
@@ -74,7 +76,12 @@ export class AppView extends Component<IProp, IState> {
                     onDeSelectAll={this.handleOnDeSelectAll}/>
             </div>
             <div className={styles.kanban}>
-                <KanbanView kanban={kanban} columnsFilter={columnsFilter}/>
+                <KanbanView
+                    kanban={kanban}
+                    storyFilter={storyFilter}
+                    createEmptyStory={this.handleCreateEmptyStory}
+                    onCreateStory={this.handleOnCreateStory}
+                    onUpdateStory={this.handleOnUpdateStory}/>
             </div>
         </div>}
       </div>
@@ -83,20 +90,56 @@ export class AppView extends Component<IProp, IState> {
 
   handleOnUnassignedSelected = () => {
     this.setState({
-      columnsFilter: unassignedStories
+      storyFilter: unassignedStories
     });
   };
 
   handleOnMemberSelected = (member: User) => {
+    this.props.storyService.updateAutoAssignTo(member);
+
     this.setState({
-      columnsFilter: storiesAssignTo(member.id)
+      storyFilter: storiesAssignTo(member.id)
     });
   };
 
   handleOnDeSelectAll = () => {
+    this.props.storyService.updateAutoAssignTo(undefined);
+
     this.setState({
-      columnsFilter: allStories
+      storyFilter: allStories,
     });
+  };
+
+  handleOnCreateStory = (story: Story, storyIndex: number, columnIndex: number) => {
+    // TODO: Sync with server
+    this.refreshStory(columnIndex, storyIndex, story);
+  };
+
+  handleOnUpdateStory = (story: Story, storyIndex: number, columnIndex: number) => {
+    // TODO: Sync with server
+    this.refreshStory(columnIndex, storyIndex, story);
+  };
+
+  refreshStory(columnIndex: number, storyIndex: number, story: Story) {
+    // TODO: Sync with server
+    const columns = this.state.kanban!.columns;
+
+    if (!story.title) {
+      columns[columnIndex].stories.splice(storyIndex, 1);
+    } else {
+      story.id = `${storyIndex}`;
+      columns[columnIndex].stories[storyIndex] = story;
+    }
+
+    this.setState({
+      kanban: Object.assign({}, this.state.kanban, {
+        columns: columns
+      })
+    });
+  }
+
+  handleCreateEmptyStory = (): Story => {
+    return this.props.storyService.createEmptyStory();
   };
 }
 

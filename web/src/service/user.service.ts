@@ -12,10 +12,12 @@ export class UserService {
   }
 
   me(): User {
+    // TODO: fetch current user from server
     return {avatarURL: '/avatar/harry.jpeg', id: 'harry', name: 'Harry'};
   }
 
   members(projectId: string): User[] {
+    // TODO: fetch users from server
     return [
       {avatarURL: '/avatar/aaron.jpeg', id: 'aaron', name: 'Aaron'},
       {avatarURL: '/avatar/oscar.png', id: 'oscar', name: 'Oscar'},

@@ -8,6 +8,7 @@ import {TeamyGraphQLService} from './service/teamy.graphql.service';
 import {GraphQLService} from './fw/GraphQL.service';
 import {FetchHTTPService} from './fw/http.service';
 import {UserService} from './service/user.service';
+import {StoryService} from './service/story.service';
 
 const httpService = new FetchHTTPService();
 const graphQLService = new GraphQLService(httpService);
@@ -16,12 +17,16 @@ const teamyGraphQLService = new TeamyGraphQLService(
   'http://localhost:8000/graphql'
 );
 const projectService = new ProjectService(teamyGraphQLService);
-
+const storyService = new StoryService();
 const userService = new UserService();
 
 ReactDOM.render(
   <React.StrictMode>
-    <AppView projectService={projectService} userService={userService}/>
+    <AppView
+      projectService={projectService}
+      storyService={storyService}
+      userService={userService}
+    />
   </React.StrictMode>,
   document.getElementById('root')
 );
