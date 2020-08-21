@@ -1,5 +1,6 @@
 import {GraphQLService, IGraphQLQuery} from '../fw/GraphQL.service';
 import {Kanban} from '../entity/kanban';
+import {EnvService} from './env.service';
 
 interface IGraphQLQueryResult {
   authQuery: IGraphQLAuthQueryResult
@@ -10,7 +11,10 @@ interface IGraphQLAuthQueryResult {
 }
 
 export class TeamyGraphQLService {
-  constructor(private graphQLService: GraphQLService, private baseURL: string) {
+  private readonly baseURL: string;
+
+  constructor(private graphQLService: GraphQLService, private envService: EnvService) {
+    this.baseURL = `${envService.getEnv().graphQLBaseURL}/graphql`;
   }
 
   getActiveKanban(): Promise<Kanban> {
