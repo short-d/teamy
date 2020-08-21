@@ -27,6 +27,19 @@ steps:
       event:
         - push
 
+  - name: build staging backend Docker image
+    image: docker
+    commands:
+      - docker build -t teamy-backend:latest -f backend/Dockerfile backend
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    when:
+      branch:
+        - master
+      event:
+        - push
+
   - name: publish staging images to DockerHub
     image: docker
     environment:
@@ -39,7 +52,9 @@ steps:
     commands:
       - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
       - docker tag teamy-web-staging:latest $DOCKERHUB_ORG_ID/teamy-web-staging:latest
+      - docker tag teamy-backend:latest $DOCKERHUB_ORG_ID/teamy-backend-staging:latest
       - docker push $DOCKERHUB_ORG_ID/teamy-web-staging:latest
+      - docker push $DOCKERHUB_ORG_ID/teamy-backend-staging:latest
     volumes:
       - name: docker
         path: /var/run/docker.sock
