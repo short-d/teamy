@@ -10,6 +10,7 @@ export class ProjectService {
   }
 
   fetchAllSprints(): Promise<Kanban[]> {
+    // TODO: fetch all sprint from server
     const sprints: Kanban[] = [
       {
         id: '',

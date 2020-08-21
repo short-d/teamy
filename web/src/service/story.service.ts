@@ -10,6 +10,7 @@ export class StoryService {
   }
 
   createEmptyStory(): Story {
+    // TODO: get unique ID from server
     return {
       id: uuidv4(),
       title: '',
