@@ -11,6 +11,8 @@ import {ColumnsFilter} from '../../filter/column.filter';
 interface IProps {
   kanban: Kanban;
   columnsFilter: ColumnsFilter;
+  onCreateStory?: (story: Story, storyIndex: number, columnIndex: number) => void
+  onUpdateStory?: (story: Story, storyIndex: number, columnIndex: number) => void
 }
 
 interface IState {
@@ -57,7 +59,9 @@ export class KanbanView extends Component<IProps, IState> {
                 <ColumnView
                   kanbanId={this.props.kanban.id}
                   column={column}
-                  onDrop={this.handleOnStoryDrop(index)}/>
+                  onDrop={this.handleOnStoryDrop(index)}
+                  onCreateStory={this.handleOnCreateStory(index)}
+                  onUpdateStory={this.handleOnUpdateStory(index)}/>
               </Draggable>
             )}
         </Container>
@@ -70,6 +74,7 @@ export class KanbanView extends Component<IProps, IState> {
   };
 
   private handleOnColumnDrop = ({removedIndex, addedIndex, payload}: DropResult) => {
+    // TODO: Sync with server
     const {columns} = this.state;
     if (removedIndex !== null) {
       columns.splice(removedIndex, 1);
@@ -97,4 +102,20 @@ export class KanbanView extends Component<IProps, IState> {
       });
     };
   }
+
+  private handleOnUpdateStory = (columnIndex: number) => {
+    return (story: Story, storyIndex: number) => {
+      if (this.props.onUpdateStory) {
+        this.props.onUpdateStory(story, storyIndex, columnIndex);
+      }
+    };
+  };
+
+  private handleOnCreateStory = (columnIndex: number) => {
+    return (story: Story, storyIndex: number) => {
+      if (this.props.onCreateStory) {
+        this.props.onCreateStory(story, storyIndex, columnIndex);
+      }
+    };
+  };
 }

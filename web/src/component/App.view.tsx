@@ -74,7 +74,11 @@ export class AppView extends Component<IProp, IState> {
                     onDeSelectAll={this.handleOnDeSelectAll}/>
             </div>
             <div className={styles.kanban}>
-                <KanbanView kanban={kanban} columnsFilter={columnsFilter}/>
+                <KanbanView
+                    kanban={kanban}
+                    columnsFilter={columnsFilter}
+                    onCreateStory={this.handleOnCreateStory}
+                    onUpdateStory={this.handleOnUpdateStory}/>
             </div>
         </div>}
       </div>
@@ -98,6 +102,33 @@ export class AppView extends Component<IProp, IState> {
       columnsFilter: allStories
     });
   };
+
+  handleOnCreateStory = (story: Story, storyIndex: number, columnIndex: number) => {
+    // TODO: Sync with server
+    this.refreshStory(columnIndex, storyIndex, story);
+  };
+
+  handleOnUpdateStory = (story: Story, storyIndex: number, columnIndex: number) => {
+    // TODO: Sync with server
+    this.refreshStory(columnIndex, storyIndex, story);
+  };
+
+  refreshStory(columnIndex: number, storyIndex: number, story: Story) {
+    // TODO: Sync with server
+    const columns = this.state.kanban!.columns;
+
+    if (!story.title) {
+      columns[columnIndex].stories.splice(storyIndex, 1);
+    } else {
+      columns[columnIndex].stories[storyIndex] = story;
+    }
+
+    this.setState({
+      kanban: Object.assign({}, this.state.kanban, {
+        columns: columns
+      })
+    });
+  }
 }
 
 export default AppView;
