@@ -20,5 +20,5 @@ func main() {
 		Schema(api.Schema).
 		Resolver(api.Resolver).
 		Build()
-	graphqlService.StartAndWait(8000)
+	graphqlService.StartAndWait(8080)
 }
