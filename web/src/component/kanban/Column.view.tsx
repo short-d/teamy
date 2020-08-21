@@ -41,13 +41,15 @@ export class ColumnView extends Component<IProps, IState> {
     const {column, storyFilter} = this.props;
     const {editingIndex} = this.state;
 
+    const stories = column.stories.filter(storyFilter);
+
     return (
       <div className={styles.column}>
         <div className={`${styles.title} ${styles[column.color]}`}>
           {column.title}
         </div>
         <div className={styles.stories}>
-          {column.stories.length < 1 && (
+          {stories.length < 1 && (
             <div className={styles.noStory}>
               <div className={styles.noStoryTitle}>No Story</div>
               <div className={styles.instructions}>
@@ -67,8 +69,7 @@ export class ColumnView extends Component<IProps, IState> {
             onDrop={this.handleOnStoryDrop}
             getChildPayload={this.handleGetChildPayload}>
             {
-              column
-                .stories
+              column.stories
                 .map((story, index) =>
                   storyFilter(story) &&
                     <Draggable key={story.id}>
@@ -113,12 +114,22 @@ export class ColumnView extends Component<IProps, IState> {
       return;
     }
 
-    const {removedIndex, addedIndex, payload} = dropResult;
+    let {removedIndex, addedIndex, payload} = dropResult;
+
+    if (addedIndex !== null) {
+      addedIndex = this.findOriginalIndex(addedIndex);
+    }
+
+    if (removedIndex !== null) {
+      removedIndex = this.findOriginalIndex(removedIndex);
+    }
+
     this.props.onDrop(removedIndex, addedIndex, payload);
   };
 
   handleGetChildPayload = (index: number): Story => {
-    return this.props.column.stories[index];
+    const {column, storyFilter} = this.props;
+    return column.stories.filter(storyFilter)[index];
   };
 
   handleDragStart = () => {
@@ -186,4 +197,22 @@ export class ColumnView extends Component<IProps, IState> {
       });
     };
   };
+
+  private findOriginalIndex(index: number) {
+    const {column, storyFilter} = this.props;
+
+    let filteredIndex = 0;
+    for (let i = 0; i < column.stories.length; i++) {
+      if (!storyFilter(column.stories[i])) {
+        continue;
+      }
+      if (index === filteredIndex) {
+        return i;
+      }
+      filteredIndex++;
+    }
+
+    // Filtered column is empty
+    return column.stories.length;
+  }
 }

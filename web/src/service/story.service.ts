@@ -16,7 +16,7 @@ export class StoryService {
       title: '',
       tags: [],
       isCompleted: false,
-      assignedTo: this.autoAssignTo
+      assignedTo: this.autoAssignTo,
     };
   }
 }
