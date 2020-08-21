@@ -5,9 +5,9 @@
 }
 
 .divider {
-  width: 50px;
-  margin: 30px auto;
   border-top: 3px solid rgba(0, 0, 0, 0.05);
+  margin: 30px auto;
+  width: 50px;
 }
 
 .others {
@@ -19,6 +19,7 @@
   &:hover {
     cursor: pointer;
   }
+
   &:not(:first-child) {
     margin-top: 16px;
   }

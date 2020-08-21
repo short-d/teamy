@@ -2,7 +2,8 @@ import {Kanban} from '../entity/kanban';
 import {TeamyGraphQLService} from './teamy.graphql.service';
 
 export class ProjectService {
-  constructor(private teamyGraphQLService: TeamyGraphQLService) {}
+  constructor(private teamyGraphQLService: TeamyGraphQLService) {
+  }
 
   fetchActiveSprint(): Promise<Kanban> {
     return this.teamyGraphQLService.getActiveKanban();
@@ -11,17 +12,17 @@ export class ProjectService {
   fetchAllSprints(): Promise<Kanban[]> {
     const sprints: Kanban[] = [
       {
-        id: "",
+        id: '',
         columns: [],
         deliveredPoints: 15,
       },
       {
-        id: "",
+        id: '',
         columns: [],
         deliveredPoints: 50,
       },
       {
-        id: "",
+        id: '',
         columns: [],
         deliveredPoints: 30,
       }

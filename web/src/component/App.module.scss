@@ -1,12 +1,12 @@
 .AppUi {
-  position: relative;
-  font-family: "Source Code Pro", sans-serif;
-  height: 100vh;
+  background-color: #faf6f1;
   box-sizing: border-box;
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
-  background-color: #faf6f1;
+  font-family: "Source Code Pro", sans-serif;
+  height: 100vh;
+  justify-content: flex-start;
+  position: relative;
 }
 
 .bottomSection {
@@ -19,8 +19,8 @@
 }
 
 .memberStories {
-  z-index: 10;
+  background-color: white;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
   padding: 20px 0;
-  background-color: white;
+  z-index: 10;
 }

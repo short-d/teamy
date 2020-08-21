@@ -1,4 +1,4 @@
-import { IHTTPService } from './http.service';
+import {IHTTPService} from './http.service';
 
 export interface IGraphQLQuery {
   query: string;
@@ -36,7 +36,8 @@ interface IGraphQLResponse<Data> {
 }
 
 export class GraphQLService {
-  constructor(private httpService: IHTTPService) {}
+  constructor(private httpService: IHTTPService) {
+  }
 
   public mutate<Data>(
     endpoint: string,

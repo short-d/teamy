@@ -30,7 +30,7 @@ export class KanbanView extends Component<IProps, IState> {
     if (kanban) {
       this.setState({
         columns: kanban.columns
-      })
+      });
     }
   }
 

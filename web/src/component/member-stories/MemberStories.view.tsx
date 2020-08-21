@@ -88,37 +88,6 @@ export class MemberStoriesView extends Component<IProps, IState> {
     );
   }
 
-  private countStories(stories: Story[]): StoryCount{
-    const userStoryCount: StoryCount = {};
-    stories.forEach(story => {
-      if (!story.assignedTo) {
-        return;
-      }
-      const userId = story.assignedTo.id;
-      if (!userStoryCount[userId]) {
-        userStoryCount[userId] = 0;
-      }
-      userStoryCount[userId]++;
-    });
-    return userStoryCount;
-  }
-
-  private shouldBlurMember = (member: User) => {
-    const {isSelected, isUnassignedSelected, } = this.state;
-    if (!isSelected) {
-      return false;
-    }
-    if (isUnassignedSelected) {
-      return true;
-    }
-    return !this.isMemberSelected(member);
-  };
-
-  private isMemberSelected(member: User) {
-    const {selectedUser} = this.state;
-    return selectedUser && selectedUser.id === member.id
-  }
-
   handleOnUnassignedClick = () => {
     const prevUnassignedSelected = this.state.isUnassignedSelected;
     this.deSelectAll();
@@ -159,6 +128,37 @@ export class MemberStoriesView extends Component<IProps, IState> {
       this.props.onMemberSelected(member);
     };
   };
+
+  private countStories(stories: Story[]): StoryCount {
+    const userStoryCount: StoryCount = {};
+    stories.forEach(story => {
+      if (!story.assignedTo) {
+        return;
+      }
+      const userId = story.assignedTo.id;
+      if (!userStoryCount[userId]) {
+        userStoryCount[userId] = 0;
+      }
+      userStoryCount[userId]++;
+    });
+    return userStoryCount;
+  }
+
+  private shouldBlurMember = (member: User) => {
+    const {isSelected, isUnassignedSelected,} = this.state;
+    if (!isSelected) {
+      return false;
+    }
+    if (isUnassignedSelected) {
+      return true;
+    }
+    return !this.isMemberSelected(member);
+  };
+
+  private isMemberSelected(member: User) {
+    const {selectedUser} = this.state;
+    return selectedUser && selectedUser.id === member.id;
+  }
 
   private deSelectAll() {
     this.setState({

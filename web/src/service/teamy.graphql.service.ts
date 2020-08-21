@@ -40,7 +40,7 @@ query ($authToken: String){
 }
       `,
       variables: {
-        authToken: ""
+        authToken: ''
       }
     };
     return this

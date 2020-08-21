@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1"
+     xmlns="http://www.w3.org/2000/svg"
+>
     <title>arrow</title>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none"
+       fill-rule="evenodd">
         <g id="Sprint" transform="translate(-488.000000, -15.000000)">
             <g id="sprint" transform="translate(263.000000, 15.000000)">
                 <g id="arrow" transform="translate(225.000000, 0.000000)">
                     <polygon id="Path" points="0 0 30 0 30 30 0 30"></polygon>
-                    <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" points="9.2625 10.7375 15 16.4625 20.7375 10.7375 22.5 12.5 15 20 7.5 12.5"></polygon>
+                    <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero"
+                             points="9.2625 10.7375 15 16.4625 20.7375 10.7375 22.5 12.5 15 20 7.5 12.5"></polygon>
                 </g>
             </g>
         </g>
