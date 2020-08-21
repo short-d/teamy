@@ -1,0 +1,55 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: create staging frontend assets
+    image: node:12.7.0-alpine
+    volumes:
+      - name: teamy-fe-dep
+        path: /drone/src/web/node_modules
+    commands:
+      - apk add --no-cache bash git
+      - cd web
+      - yarn
+      - CI=true yarn build:testing
+    when:
+      event:
+        - push
+
+  - name: build staging web Docker image
+    image: docker
+    commands:
+      - docker build -t teamy-web-staging:latest -f web/Dockerfile web
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    when:
+      event:
+        - push
+
+  - name: publish staging images to DockerHub
+    image: docker
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: DOCKERHUB_USERNAME
+      DOCKERHUB_PASSWORD:
+        from_secret: DOCKERHUB_PASSWORD
+      DOCKERHUB_ORG_ID:
+        from_secret: DOCKERHUB_ORG_ID
+    commands:
+      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+      - docker tag teamy-web-staging:latest $DOCKERHUB_ORG_ID/teamy-web-staging:latest
+      - docker push $DOCKERHUB_ORG_ID/teamy-web-staging:latest
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    when:
+      event:
+        - push
+volumes:
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+  - name: teamy-fe-dep
+    host:
+      path: /drone/teamy-fe-dep
