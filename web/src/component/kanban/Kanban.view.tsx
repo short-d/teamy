@@ -6,11 +6,12 @@ import {ColumnView} from './Column.view';
 import {Story} from '../../entity/story';
 import {Column} from '../../entity/column';
 import {Container, Draggable, DropResult} from 'react-smooth-dnd';
-import {ColumnsFilter} from '../../filter/column.filter';
+import {StoryFilter} from '../../filter/story.filter';
 
 interface IProps {
   kanban: Kanban;
-  columnsFilter: ColumnsFilter;
+  storyFilter: StoryFilter;
+  createEmptyStory: () => Story
   onCreateStory?: (story: Story, storyIndex: number, columnIndex: number) => void
   onUpdateStory?: (story: Story, storyIndex: number, columnIndex: number) => void
 }
@@ -37,8 +38,8 @@ export class KanbanView extends Component<IProps, IState> {
   }
 
   render() {
-    let {columns} = this.state;
-    columns = this.props.columnsFilter(columns);
+    const {storyFilter} = this.props;
+    const {columns} = this.state;
     return (
       <div className={styles.kanban}>
         <Container
@@ -55,11 +56,16 @@ export class KanbanView extends Component<IProps, IState> {
         >
           {columns
             .map((column, index) =>
-              <Draggable className={styles.column}>
+              <Draggable
+                key={column.id}
+                className={styles.column}>
                 <ColumnView
+                  key={index}
                   kanbanId={this.props.kanban.id}
                   column={column}
+                  storyFilter={storyFilter}
                   onDrop={this.handleOnStoryDrop(index)}
+                  createEmptyStory={this.props.createEmptyStory}
                   onCreateStory={this.handleOnCreateStory(index)}
                   onUpdateStory={this.handleOnUpdateStory(index)}/>
               </Draggable>
@@ -88,8 +94,8 @@ export class KanbanView extends Component<IProps, IState> {
   };
 
   private handleOnStoryDrop(index: number) {
-    const {columns} = this.state;
     return (removedIndex: number | null, addedIndex: number | null, payload: Story) => {
+      const {columns} = this.state;
       const {stories} = columns[index];
       if (removedIndex !== null) {
         stories.splice(removedIndex, 1);

@@ -42,7 +42,8 @@ export class StoryView extends Component<IProps, IState> {
           classNames({
             [styles.story]: true,
             [styles.active]: this.props.active
-          })}>
+          })}
+             onBlur={this.handleOnTitleTextFieldBlur}>
           <div className={styles.leftPane}>
             <div className={styles.title}>
               {isEditing &&
@@ -51,7 +52,6 @@ export class StoryView extends Component<IProps, IState> {
                   autoFocus={true}
                   value={title}
                   onChange={this.handleTitleChange}
-                  onBlur={this.handleOnTitleTextFieldBlur}
               />
               }
               {!isEditing &&

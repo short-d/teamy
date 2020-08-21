@@ -8,10 +8,13 @@ import {Story} from '../../entity/story';
 
 import add from './add.svg';
 import classNames from 'classnames';
+import {StoryFilter} from '../../filter/story.filter';
 
 interface IProps {
   kanbanId: string;
   column: Column;
+  storyFilter: StoryFilter;
+  createEmptyStory: () => Story;
   onDrop?: (removedIndex: number | null, addedIndex: number | null, payload: Story) => void;
   onCreateStory?: (story: Story, index: number) => void;
   onUpdateStory?: (story: Story, index: number) => void;
@@ -35,7 +38,7 @@ export class ColumnView extends Component<IProps, IState> {
   }
 
   render() {
-    const {column} = this.props;
+    const {column, storyFilter} = this.props;
     const {editingIndex} = this.state;
 
     return (
@@ -67,27 +70,28 @@ export class ColumnView extends Component<IProps, IState> {
               column
                 .stories
                 .map((story, index) =>
-                  <Draggable key={story.id}>
-                    <div>
-                      <div className={styles.addStoryRegion}>
-                        <div className={styles.addButton}
-                             onClick={this.handleAddStoryClick(index)}>
-                          <img src={add}/>
+                  storyFilter(story) &&
+                    <Draggable key={story.id}>
+                        <div>
+                            <div className={styles.addStoryRegion}>
+                                <div className={styles.addButton}
+                                     onClick={this.handleAddStoryClick(index)}>
+                                    <img alt={'Add'} src={add}/>
+                                </div>
+                            </div>
+                            <div className={styles.story}
+                                 onMouseEnter={this.handleMouseEnter(index)}
+                                 onMouseLeave={this.handleMouseLeave}
+                            >
+                                <StoryView
+                                    isEditing={index === editingIndex}
+                                    story={story}
+                                    active={index === this.state.selectedIndex}
+                                    onStartEditing={this.handleOnStartEditingStory(index)}
+                                    onFinishEditing={this.handleOnFinishEditingStory(index)}/>
+                            </div>
                         </div>
-                      </div>
-                      <div className={styles.story}
-                           onMouseEnter={this.handleMouseEnter(index)}
-                           onMouseLeave={this.handleMouseLeave}
-                      >
-                        <StoryView
-                          isEditing={index === editingIndex}
-                          story={story}
-                          active={index === this.state.selectedIndex}
-                          onStartEditing={this.handleOnStartEditingStory(index)}
-                          onFinishEditing={this.handleOnFinishEditingStory(index)}/>
-                      </div>
-                    </div>
-                  </Draggable>
+                    </Draggable>
                 )
             }
             <div className={classNames({
@@ -95,7 +99,7 @@ export class ColumnView extends Component<IProps, IState> {
               [styles.lastAddButton]: true
             })}
                  onClick={this.handleAddStoryClick(this.props.column.stories.length)}>
-              <img src={add}/>
+              <img alt={'Add'} src={add}/>
             </div>
           </Container>
         </div>
@@ -144,12 +148,7 @@ export class ColumnView extends Component<IProps, IState> {
 
   handleAddStoryClick = (index: number) => {
     return () => {
-      const story: Story = {
-        id: '',
-        title: '',
-        tags: [],
-        isCompleted: false
-      };
+      const story = this.props.createEmptyStory();
       this.props.column.stories.splice(index, 0, story);
       this.setState({
         selectedIndex: index,
@@ -170,9 +169,6 @@ export class ColumnView extends Component<IProps, IState> {
         if (this.props.onCreateStory) {
           this.props.onCreateStory(story, index);
         }
-        this.setState({
-          createStory: undefined
-        });
         return;
       }
 
@@ -186,7 +182,7 @@ export class ColumnView extends Component<IProps, IState> {
     return () => {
       this.setState({
         editingIndex: index,
-        selectedIndex: index
+        selectedIndex: index,
       });
     };
   };
